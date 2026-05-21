@@ -15,8 +15,8 @@
         .section-title { font-weight: bold; color: #2e6f40; margin-top: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
         p { line-height: 1.6; font-size: 15px; margin-top: 5px; }
         
-        /* Karekodsuz Giriş İçin Ana Sayfa Tasarımı */
-        .welcome-panel { max-width: 500px; margin: 40px auto; background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+        /* Karşılama Paneli */
+        .welcome-panel { max-width: 500px; margin: 40px auto; background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; display: none; }
         .welcome-panel h2 { color: #2e6f40; margin-bottom: 10px; }
         .tree-menu { display: flex; flex-direction: column; gap: 10px; margin-top: 25px; }
         .tree-btn { display: block; padding: 12px; background-color: #2e6f40; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: background 0.2s; }
@@ -26,12 +26,10 @@
 <body>
 
     <!-- KAREKODSUZ GİRİŞTE AÇILACAK KARŞILAMA PANELİ -->
-    <div id="welcome-screen" class="welcome-panel" style="display: none;">
+    <div id="welcome-screen" class="welcome-panel">
         <h2>Doğa Keşif Rehberine Hoş Geldiniz! 🌿</h2>
         <p>Şu an bir karekod okutmadınız. Ancak sistemdeki ağaçları ve hikayelerini test etmek için aşağıdaki listeye tıklayarak sayfaları inceleyebilirsiniz:</p>
-        <div id="tree-list" class="tree-menu">
-            <!-- Dinamik ağaç butonları buraya gelecek -->
-        </div>
+        <div id="tree-list" class="tree-menu"></div>
     </div>
 
     <!-- KAREKOD OKUTULDUĞUNDA AÇILACAK DETAY KARTI -->
@@ -58,9 +56,13 @@
         const agacId = urlParams.get('id');
 
         fetch('agaclar.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Dosya yüklenemedi');
+                }
+                return response.json();
+            })
             .then(data => {
-                // EĞER KAREKOD OKUTULMUŞSA (ID varsa)
                 if (agacId && data[agacId]) {
                     const agac = data[agacId];
                     document.getElementById('tree-card').style.display = 'block';
@@ -70,13 +72,10 @@
                     document.getElementById('agac-bilgi').innerText = agac.bilgi;
                     document.getElementById('agac-resim').src = agac.resim;
                     document.title = agac.isim + " - Keşif Rehberi";
-                } 
-                // EĞER DOĞRUDAN GİRİŞ YAPILMIŞSA (Karekod yoksa)
-                else {
-                    document.getElementById('welcome-screen').style.style.display = 'block';
+                } else {
+                    document.getElementById('welcome-screen').style.display = 'block';
                     const listContainer = document.getElementById('tree-list');
                     
-                    // json dosyasındaki tüm ağaçları bulup otomatik buton oluşturur
                     Object.keys(data).forEach(key => {
                         const btn = document.createElement('a');
                         btn.href = `index.html?id=${key}`;
@@ -87,9 +86,9 @@
                 }
             })
             .catch(error => {
-                console.error("Veri yüklenirken hata oluştu:", error);
+                console.error("Hata:", error);
                 document.getElementById('welcome-screen').style.display = 'block';
-                document.getElementById('welcome-screen').innerHTML = "<h2>Hata!</h2><p>agaclar.json dosyası yüklenemedi. Lütfen dosya adını ve içeriğini kontrol edin.</p>";
+                document.getElementById('welcome-screen').innerHTML = "<h2>Hata!</h2><p>agaclar.json dosyası bulunamadı veya içi boş. Lütfen GitHub projenizde 'agaclar.json' adında bir dosya olduğundan emin olun.</p>";
             });
     </script>
 </body>
