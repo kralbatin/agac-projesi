@@ -1,0 +1,16 @@
+{
+  "cinar": {
+    "isim": "Doğu Çınarı",
+    "latince": "Platanus orientalis",
+    "omur": "Biçilen ömürleri 1000 yılı bulabilir.",
+    "bilgi": "Çınar ağaçları uzun ömürleri ve dayanıklılıkları ile bilinirler. Kent ekolojisinde hava kirliliğini önlemede çok etkilidirler.",
+    "resim": "https://images.unsplash.com/photo-1502082553048-f009c37129b9"
+  },
+  "erguvan": {
+    "isim": "Erguvan",
+    "latince": "Cercis siliquastrum",
+    "omur": "Ortalama 50-70 yıl yaşarlar.",
+    "bilgi": "Baharın müjdecisidir. İstanbul boğazının simge ağaçlarındandır. Yapraklanmadan önce mor-pembe çiçekler açar.",
+    "resim": "https://images.unsplash.com/photo-1528183429752-a97d0bf99b5a"
+  }
+}
