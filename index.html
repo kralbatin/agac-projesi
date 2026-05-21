@@ -27,7 +27,7 @@
 
     <div id="welcome-screen" class="welcome-panel">
         <h2>Doğa Keşif Rehberine Hoş Geldiniz! 🌿</h2>
-        <p>Şu an bir karekod okutmadınız. Ancak sistemdeki ağaçları ve hikayelerini test etmek için aşağıdaki listeye tıklayarak sayfaları inceleyebilirsiniz:</p>
+        <p>Ağaçların üzerindeki karekodları okutarak hikayelerini dinleyebilir veya aşağıdaki listeden merak ettiğiniz ağacı seçerek keşfe başlayabilirsiniz:</p>
         <div id="tree-list" class="tree-menu"></div>
     </div>
 
@@ -42,7 +42,7 @@
                 <p id="agac-bilgi"></p>
             </div>
             
-            <div class="section-title">Ortalama Ömür</div>
+            <div class="section-title">Ortalama Ömür / Bilgi</div>
             <p id="agac-omur"></p>
             
             <a href="index.html" style="display:inline-block; margin-top:20px; color:#2e6f40; text-decoration:none; font-weight:bold;">← Ana Sayfaya Dön</a>
@@ -50,22 +50,69 @@
     </div>
 
     <script>
-        // TÜM AĞAÇ VERİLERİNİ ARTIK DOĞRUDAN BURADA TUTUYORUZ (Dışarıdan dosya çağırmıyoruz)
+        // TÜM AĞAÇ VERİLERİ VE HİKAYELERİ (8 AĞAÇ EKSİKSİZ)
         const agacVerileri = {
-            "cinar": {
-                "isim": "Doğu Çınarı",
-                "latince": "Platanus orientalis",
-                "omur": "Biçilen ömürleri 1000 yılı bulabilir.",
-                "bilgi": "Ben bir Doğu Çınarıyım. Yüzyıllardır bu topraklarda derin köklerimle zamana meydan okuyorum. Gölgem altında kim bilir kaç nesil soluklandı, kaç çocuk koşturdu... Yapraklarımla havayı temizler, heybetli gövdemle doğanın gücünü temsil ederim.",
-                "resim": "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=500&q=80"
+            "ihlamur": {
+                "isim": "Ihlamur Ağacı",
+                "latince": "Tilia",
+                "omur": "Ortalama 100 - 500 yıl yaşayabilirler.",
+                "bilgi": "Merhaba! Ben mahallenizin, kampüsünüzün ya da parkınızın en mis kokulu sakinlerinden biriyim. Yaz başlangıcında açtığım sapsarı çiçeklerimle sadece arıları değil, kokumu içine çeken herkesi büyülerim. Büyükleriniz beni çok iyi tanır; kışın içinizi ısıtan, öksürüğünüzü hafifleten o şifalı çay işte benim kalbimden gelir. Yanımdan geçerken derin bir nefes almayı unutmayın!",
+                "resim": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=500&q=80"
+            },
+            "yalanci-akasya": {
+                "isim": "Yalancı Akasya",
+                "latince": "Robinia pseudoacacia",
+                "omur": "Hızlı büyürler, ortalama 60 - 100 yıl yaşarlar.",
+                "bilgi": "Bana 'Yalancı Akasya' dediklerine bakmayın, doğaya olan faydam tamamen gerçektir! Beyaz, salkım salkım çiçeklerimle baharda adeta bir gelinlik giyerim. Köklerimle toprağa öyle sıkı tutunurum ki erozyonu engellemekte üstüme yoktur. Zorlu, kurak... hava kirliliğinin yoğun olduğu şehirlerde bile inatla direnir, size temiz hava üretirim. Mücadeleci bir dost arıyorsanız, buradayım.",
+                "resim": "https://images.unsplash.com/photo-1601564267624-916c871dcc63?auto=format&fit=crop&w=500&q=80"
+            },
+            "akdeniz-servisi": {
+                "isim": "Akdeniz Servisi",
+                "latince": "Cupressus sempervirens",
+                "omur": "2000 yıla kadar yaşayabilen anıtsal ağaçlardandır.",
+                "bilgi": "Gökyüzüne doğru uzanan dimdik, asil endamımı fark ettiniz mi? Ben Akdeniz Servisiyim. Yaz-kış yapraklarımı dökmediğim için antik çağlardan beri 'ebedi yaşamın' sembolüyüm. Rüzgarlara karşı doğal bir rüzgarkıran (kalkan) gibi durur, sert fırtınaları göğsümde yumuşatırım. Kendine has Akdeniz kokulu reçinemle doğaya asalet katıyorum.",
+                "resim": "https://images.unsplash.com/photo-1583091937989-1383bdc1dbe4?auto=format&fit=crop&w=500&q=80"
+            },
+            "arizona-servisi": {
+                "isim": "Arizona Servisi",
+                "latince": "Cupressus arizonica",
+                "omur": "100 - 200 yıl arasında yaşayabilirler.",
+                "bilgi": "Ben uzaklardan, Amerika'nın yarı kurak kanyonlarından buralara misafir gelmiş bir Arizona Servisiyim. Kuraklığa, sıcağa ve çetin don olaylarına karşı doğuştan şerbetliyim. Yapraklarımın rengine dikkatli bakın; yeşilden ziyade büyüleyici bir gümüş-mavi tonu göreceksiniz. Susuzluğa meydan okuyan yapımla peyzajın en dayanıklı ve estetik süsüyüm.",
+                "resim": "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=500&q=80"
+            },
+            "karacam": {
+                "isim": "Karaçam",
+                "latince": "Pinus nigra",
+                "omur": "Uykusu derin, ömrü uzundur; 500 yıldan fazla yaşayabilir.",
+                "bilgi": "Adım Karaçam, çünkü gövdemi kaplayan kabuklar koyu renkli, kalın ve derindir. Anadolu'nun asıl ve kadim sahiplerinden biriyim. Dağların en yüksek yerlerinde, kimsenin yaşayamadığı kayalıklarda bile kök salabilirim. Sert iğne yapraklarımla kışın bembeyaz karlar altında bile yeşil kalır, orman canlılarına sıcak bir yuva sunarım.",
+                "resim": "https://images.unsplash.com/photo-1547619220-6d80ff3d5a2d?auto=format&fit=crop&w=500&q=80"
+            },
+            "zeytin": {
+                "isim": "Zeytin Ağacı",
+                "latince": "Olea europaea",
+                "omur": "Binlerce yıl yaşayabilir; mitolojide 'Ölmez Ağaç' olarak bilinir.",
+                "bilgi": "Bana yaklaşırken tarih sayfalarını araladığınızı hissedin, çünkü ben insanlık tarihinin en eski şahidiyim. Yapraklarımla barışı, meyve ve yağımla sağlığı ve bereketi temsil ederim. Gövdem yıllar geçtikçe bükülür, derin yarıklar açılır ama her bahar yeniden canlanır, zeytinlerimi taptaze sunarım. Ben bilgeliğin ve ölümsüzlüğün ta kendisiyim.",
+                "resim": "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?auto=format&fit=crop&w=500&q=80"
+            },
+            "ladin": {
+                "isim": "Ladin",
+                "latince": "Picea",
+                "omur": "Ortalama 400 - 600 yıl boyunca yaşayabilirler.",
+                "bilgi": "Kusursuz bir piramit şeklindeki gövdeme uzaktan bakınca beni hemen tanırsınız; ben Ladin ağacıyım! Genellikle soğuk ve nemli iklimleri, yüksek dağ yamaçlarını severim. Dallarım o kadar sık ve simetriktir ki, kışın yağan karları bir yorgan gibi taşır ama kırılmam. Kozalaklarım dallarımdan aşağıya doğru sarkık durur (beni çamlardan ayıran en tatlı özelliğim budur). Müziğe can veren kemanların, gitarların gövdesinde benim odunum saklıdır.",
+                "resim": "https://images.unsplash.com/photo-1608501821300-4f99e58bba77?auto=format&fit=crop&w=500&q=80"
+            },
+            "mavi-servi": {
+                "isim": "Mavi Servi",
+                "latince": "Cupressus glabra",
+                "omur": "100 ile 300 yıl arasında sağlıkla yaşayabilirler.",
+                "bilgi": "Doğanın en asil renk kartelasından çıktım geldim: Karşınızda Mavi Servi! Yeşilin sıradanlığına inat, mavi-yeşil ve dumanlı gümüş rengi yapraklarımla etrafıma hemen fark yaratırım. Dokunduğunuzda elinizde bırakacağım o taze limonumsu reçine kokusu benim imzamdır. Budanmaya ve şekil verilmeye çok yatkın olduğum için parkların en şık mimari figürüyüm. Gökyüzüne uzanan renkli bir fırça darbesiyim.",
+                "resim": "https://images.unsplash.com/photo-1500622944204-b135684e99fd?auto=format&fit=crop&w=500&q=80"
             }
-            // YENİ AĞAÇLARI BİRAZDAN TAM BURAYA EKLEYECEĞİZ!
         };
 
         const urlParams = new URLSearchParams(window.location.search);
         const agacId = urlParams.get('id');
 
-        // Sayfa açılır açılmadık veriyi kontrol et
         if (agacId && agacVerileri[agacId]) {
             const agac = agacVerileri[agacId];
             document.getElementById('tree-card').style.display = 'block';
