@@ -25,14 +25,12 @@
 </head>
 <body>
 
-    <!-- KAREKODSUZ GİRİŞTE AÇILACAK KARŞILAMA PANELİ -->
     <div id="welcome-screen" class="welcome-panel">
         <h2>Doğa Keşif Rehberine Hoş Geldiniz! 🌿</h2>
         <p>Şu an bir karekod okutmadınız. Ancak sistemdeki ağaçları ve hikayelerini test etmek için aşağıdaki listeye tıklayarak sayfaları inceleyebilirsiniz:</p>
         <div id="tree-list" class="tree-menu"></div>
     </div>
 
-    <!-- KAREKOD OKUTULDUĞUNDA AÇILACAK DETAY KARTI -->
     <div id="tree-card" class="card">
         <img id="agac-resim" src="" alt="Ağaç Resmi">
         <div class="content">
@@ -52,44 +50,43 @@
     </div>
 
     <script>
+        // TÜM AĞAÇ VERİLERİNİ ARTIK DOĞRUDAN BURADA TUTUYORUZ (Dışarıdan dosya çağırmıyoruz)
+        const agacVerileri = {
+            "cinar": {
+                "isim": "Doğu Çınarı",
+                "latince": "Platanus orientalis",
+                "omur": "Biçilen ömürleri 1000 yılı bulabilir.",
+                "bilgi": "Ben bir Doğu Çınarıyım. Yüzyıllardır bu topraklarda derin köklerimle zamana meydan okuyorum. Gölgem altında kim bilir kaç nesil soluklandı, kaç çocuk koşturdu... Yapraklarımla havayı temizler, heybetli gövdemle doğanın gücünü temsil ederim.",
+                "resim": "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=500&q=80"
+            }
+            // YENİ AĞAÇLARI BİRAZDAN TAM BURAYA EKLEYECEĞİZ!
+        };
+
         const urlParams = new URLSearchParams(window.location.search);
         const agacId = urlParams.get('id');
 
-        fetch('agaclar.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Dosya yüklenemedi');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (agacId && data[agacId]) {
-                    const agac = data[agacId];
-                    document.getElementById('tree-card').style.display = 'block';
-                    document.getElementById('agac-isim').innerText = agac.isim;
-                    document.getElementById('agac-latin').innerText = agac.latince;
-                    document.getElementById('agac-omur').innerText = agac.omur;
-                    document.getElementById('agac-bilgi').innerText = agac.bilgi;
-                    document.getElementById('agac-resim').src = agac.resim;
-                    document.title = agac.isim + " - Keşif Rehberi";
-                } else {
-                    document.getElementById('welcome-screen').style.display = 'block';
-                    const listContainer = document.getElementById('tree-list');
-                    
-                    Object.keys(data).forEach(key => {
-                        const btn = document.createElement('a');
-                        btn.href = `index.html?id=${key}`;
-                        btn.className = 'tree-btn';
-                        btn.innerText = `🌲 ${data[key].isim} Sayfasını Gör`;
-                        listContainer.appendChild(btn);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error("Hata:", error);
-                document.getElementById('welcome-screen').style.display = 'block';
-                document.getElementById('welcome-screen').innerHTML = "<h2>Hata!</h2><p>agaclar.json dosyası bulunamadı veya içi boş. Lütfen GitHub projenizde 'agaclar.json' adında bir dosya olduğundan emin olun.</p>";
+        // Sayfa açılır açılmadık veriyi kontrol et
+        if (agacId && agacVerileri[agacId]) {
+            const agac = agacVerileri[agacId];
+            document.getElementById('tree-card').style.display = 'block';
+            document.getElementById('agac-isim').innerText = agac.isim;
+            document.getElementById('agac-latin').innerText = agac.latince;
+            document.getElementById('agac-omur').innerText = agac.omur;
+            document.getElementById('agac-bilgi').innerText = agac.bilgi;
+            document.getElementById('agac-resim').src = agac.resim;
+            document.title = agac.isim + " - Keşif Rehberi";
+        } else {
+            document.getElementById('welcome-screen').style.display = 'block';
+            const listContainer = document.getElementById('tree-list');
+            
+            Object.keys(agacVerileri).forEach(key => {
+                const btn = document.createElement('a');
+                btn.href = `index.html?id=${key}`;
+                btn.className = 'tree-btn';
+                btn.innerText = `🌲 ${agacVerileri[key].isim} Sayfasını Gör`;
+                listContainer.appendChild(btn);
             });
+        }
     </script>
 </body>
 </html>
